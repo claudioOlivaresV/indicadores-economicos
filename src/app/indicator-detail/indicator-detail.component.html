@@ -1,0 +1,70 @@
+<mat-toolbar>
+    <button mat-icon-button class="example-icon favorite-icon" (click)="btnClick()"
+        aria-label="Example icon-button with heart icon" matTooltip="volver">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <ng-container *ngIf="!status.loading && !status2.loading">
+        <ng-container *ngIf="!status.error && !status2.error">
+            <span class="m-auto">{{data.nombre}}</span>
+        </ng-container>
+    </ng-container>
+
+</mat-toolbar>
+<ng-container *ngIf="status.loading || status2.loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+
+    <div class="item px-3 mt-4">
+        <ngx-skeleton-loader count="10" [theme]="{ 'border-radius': '0', height: '40px' }"></ngx-skeleton-loader>
+    </div>
+</ng-container>
+<ng-container *ngIf="!status.loading && !status2.loading">
+    <ng-container *ngIf="!status.error && !status2.error">
+
+        <mat-card class="example-card m-3">
+            <mat-card-header class="d-flex justify-content-center ">
+                <mat-card-title class="text-center class= text-primary"> ${{data.serie[0].valor}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="text-center">
+                <p class=" text-secondary">
+                    <mat-icon class="calendar">paid</mat-icon>
+                    {{data.nombre}}
+                </p>
+                <p class=" text-secondary">
+                    <mat-icon class="calendar">calendar_today</mat-icon>
+                    {{data.serie[0].fecha | date:"yyyy-MM-dd" : 'UTC'}}
+                </p>
+                <p class=" text-secondary">
+                    <mat-icon class="calendar">verified</mat-icon>
+                    {{data.unidad_medida}}
+                </p>
+
+            </mat-card-content>
+        </mat-card>
+        <div class="d-flex aling-items-center px-3 text-secondary">
+            <h3 class="">
+                Evolución Anual  
+            </h3>
+            <mat-icon class="ml-2">trending_up</mat-icon>
+
+        </div>
+        <mat-divider class="mb-3"></mat-divider>
+
+        <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel" [timeline]="timeline" [results]="multi" (select)="onSelect($event)"
+            (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+        </ngx-charts-line-chart>
+    </ng-container>
+    <ng-container *ngIf="status.error || status2.error">
+
+        <mat-card class="example-card m-3">
+            <mat-card-header class="d-flex justify-content-center ">
+                <mat-card-title class="text-center class= text-primary"> Error, servicio no disponible </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="text-center">
+                <button (click)="tryAgain()" mat-raised-button color="primary">Volver a intentar</button>
+
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+</ng-container>

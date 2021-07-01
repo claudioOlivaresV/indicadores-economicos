@@ -1,0 +1,52 @@
+<mat-toolbar class="text-center">
+    <span class="m-auto">Indicadores</span>
+</mat-toolbar>
+<ng-container *ngIf="status.loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+
+    <div class="item px-3 mt-4">
+        <ngx-skeleton-loader count="10" [theme]="{ 'border-radius': '0', height: '40px' }"></ngx-skeleton-loader>
+    </div>
+</ng-container>
+<ng-container *ngIf="!status.loading">
+    <ng-container *ngIf="!status.error">
+        <ol class="list-group ">
+            <ng-container *ngFor="let item of data; let i = index">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class=" text-secondary">{{item.nombre}}</div>
+                        <span class="text-primary">{{item.unidad_medida}}</span>
+                    </div>
+
+                    <button (click)="btnClick(item.codigo)" mat-icon-button
+                        aria-label="Example icon button with a vertical three dot icon" class="text-primary"
+                        matTooltip="Ver detalle">
+                        <mat-icon class="mt-0 text-secondary">info_outline</mat-icon>
+                    </button>
+
+
+                    <button (click)="btnClick(item.codigo)" mat-icon-button
+                        aria-label="Example icon button with a vertical three dot icon" class="text-primary"
+                        matTooltip="Ver detalle">
+                        <mat-icon>chevron_right</mat-icon>
+                    </button>
+                </li>
+
+            </ng-container>
+
+
+        </ol>
+
+    </ng-container>
+    <ng-container *ngIf="status.error">
+        <mat-card class="example-card m-3">
+            <mat-card-header class="d-flex justify-content-center ">
+                <mat-card-title class="text-center class= text-primary"> Error, servicio no disponible  </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="text-center">
+                <button (click)="tryAgain()" mat-raised-button color="primary">Volver a intentar</button>
+
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+</ng-container>

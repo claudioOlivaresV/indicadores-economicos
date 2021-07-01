@@ -1,0 +1,59 @@
+<mat-toolbar>
+    <button mat-icon-button class="example-icon favorite-icon" (click)="btnClick()"
+        aria-label="Example icon-button with heart icon" matTooltip="volver">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+    <ng-container *ngIf="!status.loading">
+        <ng-container *ngIf="!status.error">
+            <span class="m-auto">{{data.nombre}}</span>
+        </ng-container>
+    </ng-container>
+
+</mat-toolbar>
+<ng-container *ngIf="status.loading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+
+    <div class="item px-3 mt-4">
+        <ngx-skeleton-loader count="10" [theme]="{ 'border-radius': '0', height: '40px' }"></ngx-skeleton-loader>
+    </div>
+</ng-container>
+<ng-container *ngIf="!status.loading">
+    <ng-container *ngIf="!status.error">
+        <ol class="list-group ">
+            <ng-container *ngFor="let item of data.serie; let i = index">
+                <li class="list-group-item d-flex justify-content-center align-items-start">
+                    <div class="col-6">
+                        <div class=" text-primary">
+                            <a [routerLink]="['/indicator-detail/'+ data.codigo + '/' + item.fecha]"
+                                class="text-decoration-none">
+                                <mat-icon class="calendar">calendar_today</mat-icon> 
+                                {{item.fecha | date:"yyyy-MM-dd" : 'UTC'}}
+
+                            </a>
+                        </div>
+
+                    </div>
+                    <div>
+                        <span class="text-secondary">${{item.valor}}</span>
+
+                    </div>
+
+                </li>
+            </ng-container>
+
+
+        </ol>
+    </ng-container>
+    <ng-container *ngIf="status.error">
+
+        <mat-card class="example-card m-3">
+            <mat-card-header class="d-flex justify-content-center ">
+                <mat-card-title class="text-center class= text-primary"> Error, servicio no disponible  </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="text-center">
+                <button (click)="tryAgain()" mat-raised-button color="primary">Volver a intentar</button>
+
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+</ng-container>
